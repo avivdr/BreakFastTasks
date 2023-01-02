@@ -11,16 +11,19 @@ namespace BreakFastTasks
             Console.WriteLine("Car Engine Stopped");
 
         }
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             //  SimpleBreakfast.MakeBreakfastDemo_1();
-         // TaskedBreakFast.MakeBreakfastDemo_4().Wait();
-            ElectricCar car=new ElectricCar();
-            car.CarShutDown += Message;
-            car.StartEngine();
-            
-           
-          
+            // TaskedBreakFast.MakeBreakfastDemo_4().Wait();
+            Task[] tasks = new Task[5];
+            ElectricCar[] eCars = new ElectricCar[tasks.Length];
+            for (int i = 0; i < tasks.Length; i++)
+            {
+                eCars[i] = new ElectricCar();
+                tasks[i] = eCars[i].StartEngineAsync();
+            }
+            await Task.WhenAll(tasks);
+            Console.WriteLine("All cars finished");
         }
     }
 }
